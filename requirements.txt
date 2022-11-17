@@ -1,5 +1,5 @@
 asgiref
-backports.zoneinfo
+backports.zoneinfo;python_version<"3.9"
 black
 click
 Django
