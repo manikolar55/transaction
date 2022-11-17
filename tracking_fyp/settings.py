@@ -80,9 +80,9 @@ WSGI_APPLICATION = 'tracking_fyp.wsgi.application'
 #     'default': {
 #
 #             'ENGINE': 'django.db.backends.mysql',
-#             'NAME': 'tracking',
-#             'USER': 'mani',
-#             'PASSWORD': 'mani1234@',
+#             'NAME': 'postgresql-curved-23813',
+#             'USER': 'hyhgwtnamxcyxd',
+#             'PASSWORD': '5b915d67cf4b342749bdb3feaa04ae79a8e047fc2143613fde6e8071fce7264a',
 #             'HOST': 'localhost',
 #             'PORT': '3306',
 #             'OPTIONS': {'init_command': 'SET default_storage_engine=INNODB; SET TRANSACTION ISOLATION LEVEL SERIALIZABLE'},
@@ -93,10 +93,10 @@ WSGI_APPLICATION = 'tracking_fyp.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': '1234',
-        'HOST': '127.0.0.1',
+        'NAME': 'postgresql-curved-23813',
+        'USER': 'hyhgwtnamxcyxd',
+        'PASSWORD': '5b915d67cf4b342749bdb3feaa04ae79a8e047fc2143613fde6e8071fce7264a',
+        'HOST': 'ec2-54-86-214-124.compute-1.amazonaws.com',
         'PORT': '5432',
     }
 }
