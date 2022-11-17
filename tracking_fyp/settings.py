@@ -76,18 +76,29 @@ WSGI_APPLICATION = 'tracking_fyp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#
+#             'ENGINE': 'django.db.backends.mysql',
+#             'NAME': 'tracking',
+#             'USER': 'mani',
+#             'PASSWORD': 'mani1234@',
+#             'HOST': 'localhost',
+#             'PORT': '3306',
+#             'OPTIONS': {'init_command': 'SET default_storage_engine=INNODB; SET TRANSACTION ISOLATION LEVEL SERIALIZABLE'},
+#
+#         },
+# }
+
 DATABASES = {
     'default': {
-
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'tracking',
-            'USER': 'mani',
-            'PASSWORD': 'mani1234@',
-            'HOST': 'localhost',
-            'PORT': '3306',
-            'OPTIONS': {'init_command': 'SET default_storage_engine=INNODB; SET TRANSACTION ISOLATION LEVEL SERIALIZABLE'},
-
-        },
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': '1234',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+    }
 }
 
 
