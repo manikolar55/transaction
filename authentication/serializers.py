@@ -37,17 +37,21 @@ class UserSerializer(serializers.ModelSerializer):
         """
         x = super().errors
         if x:
-            if x.get('non_field_errors'):
-                return {'message': x['non_field_errors'][0], 'success': False}
-            elif x.get('username'):
-                return {'message': "Username field required", 'success': False}
-            elif x.get('password'):
-                return {'message': "Password field required", 'success': False}
-            return ReturnDict({'errors': x}, serializer=self)
+            if x.get("non_field_errors"):
+                return {"message": x["non_field_errors"][0], "success": False}
+            elif x.get("username"):
+                return {"message": "Username field required", "success": False}
+            elif x.get("password"):
+                return {"message": "Password field required", "success": False}
+            return ReturnDict({"errors": x}, serializer=self)
         return ReturnDict(x, serializer=self)
 
 
 class RegisterSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(max_length=50, required=True)
+    username = serializers.EmailField(
+        required=True, validators=[UniqueValidator(queryset=User.objects.all())]
+    )
     email = serializers.EmailField(
         required=True, validators=[UniqueValidator(queryset=User.objects.all())]
     )
@@ -76,3 +80,30 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.set_password(validated_data["password"])
         user.save()
         return user
+
+    @property
+    def errors(self):
+        """
+        Returns custom error message
+
+        Returns
+        -------
+        ReturnDict
+            errors dict
+        """
+        x = super().errors
+        if x:
+            if x.get("non_field_errors"):
+                return {"message": x["non_field_errors"][0], "success": False}
+            elif x.get("username"):
+                return {"message": x["username"][0], "success": False}
+            elif x.get("password"):
+                return {"message": x["password"][0], "success": False}
+            elif x.get("name"):
+                return {"message": x["name"][0], "success": False}
+            elif x.get("email"):
+                return {"message": x["email"][0], "success": False}
+            elif x.get("password2"):
+                return {"message": x["password2"][0], "success": False}
+            return ReturnDict({"errors": x}, serializer=self)
+        return ReturnDict(x, serializer=self)
