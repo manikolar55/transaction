@@ -9,6 +9,7 @@ class BookedSeatSerializer(serializers.Serializer):
     block = serializers.CharField(max_length=10, required=True)
     seat = serializers.IntegerField(required=True)
     booked = serializers.BooleanField(required=True)
+    car_number = serializers.CharField(required=True)
 
     class Meta:
         model = CarsBlock
@@ -45,5 +46,7 @@ class BookedSeatSerializer(serializers.Serializer):
                 return {'message': "booked field required", 'success': False}
             elif x.get('seat'):
                 return {'message': "seat field required", 'success': False}
+            elif x.get('car_number'):
+                return {'message': "Car Number field required", 'success': False}
             return ReturnDict({'errors': x}, serializer=self)
         return ReturnDict(x, serializer=self)
