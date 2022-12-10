@@ -22,6 +22,7 @@ class CarsBlock(models.Model):
     block = models.ForeignKey(Block, on_delete=models.PROTECT)
     seat_number = models.IntegerField()
     taken = models.BooleanField(default=False)
+    car_number = models.CharField(max_length=50, null=True, blank=True)
 
 
     class Meta:
