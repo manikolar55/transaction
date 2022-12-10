@@ -23,8 +23,6 @@ class CarsBlock(models.Model):
     seat_number = models.IntegerField()
     taken = models.BooleanField(default=False)
 
-    def __str__(self):
-        return self.seat_number, self.user, self.block, self.taken
 
     class Meta:
         db_table = "cars_model"

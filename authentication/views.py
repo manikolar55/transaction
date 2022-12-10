@@ -18,7 +18,8 @@ class UserDetailAPI(APIView):
         serializer.is_valid(raise_exception=True)
         user_obj = User.objects.get(username=serializer.validated_data["username"])
         if user_obj.password != data["password"]:
-            raise ValidationError("Password is incorrect")
+            res = {'message': "password is incorrect", 'success': False}
+            return Response(res)
         token, created = Token.objects.get_or_create(user=user_obj)
         response = {
             "username": serializer.validated_data["username"],

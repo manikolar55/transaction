@@ -10,29 +10,22 @@ from .serializers import BookedSeatSerializer
 
 
 class BookingData(APIView):
-    permission_classes = (AllowAny,)
 
     def get(self, request):
 
         response_list = []
+        final_dict = {}
         cars_block = Block.objects.all()
         for data in cars_block:
             booked_list = []
+            my_dict = {}
             cars_data = CarsBlock.objects.filter(block__blocks=data.blocks)
-            taken_seats = cars_data.filter(taken=True)
-            for seats in taken_seats:
-                booked_list.append(seats.seat_number)
+            for block in cars_data:
+                my_dict[block.seat_number] = block.taken
+            final_dict[data.blocks] = my_dict
 
-            res = {
-                data.blocks: {
-                    "total_seats": len(cars_data),
-                    "booked_seats": booked_list,
-                }
-            }
-            response_list.append(res)
-
-        response = {"data": response_list}
-        return Response(response, status=HTTP_200_OK)
+        res = {"data": [final_dict]}
+        return Response(res, status=HTTP_200_OK)
 
 
 class BookedSeat(APIView):
@@ -40,11 +33,19 @@ class BookedSeat(APIView):
         data = request.data
         serializer = BookedSeatSerializer(data=data)
         serializer.is_valid(raise_exception=True)
-        car_data = CarsBlock.objects.filter(block__blocks=data["block"], seat_number=data["seat"]).first()
+        car_data = CarsBlock.objects.filter(
+            block__blocks=data["block"], seat_number=data["seat"]
+        ).first()
         if car_data:
-            car_data.taken = data["booked"]
-            car_data.user = request.user.id
-            car_data.save(update_fields=["taken", "user"])
-            return Response("seat booked", status=HTTP_201_CREATED)
+            if data["booked"] == "True":
+                car_data.taken = data["booked"]
+                car_data.user = request.user.id
+                car_data.save(update_fields=["taken", "user"])
+                return Response("Seat Booked", status=HTTP_201_CREATED)
+            else:
+                car_data.taken = data["booked"]
+                car_data.user = request.user.id
+                car_data.save(update_fields=["taken", "user"])
+                return Response("Seat Dropped", status=HTTP_201_CREATED)
         else:
             return Response("Data Not Found", status=HTTP_201_CREATED)

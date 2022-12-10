@@ -3,6 +3,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.utils.serializer_helpers import ReturnDict
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 
@@ -21,8 +22,29 @@ class UserSerializer(serializers.ModelSerializer):
         username = attrs["username"]
         password = attrs["password"]
         if not User.objects.filter(email=username):
-            raise ValidationError("User is email is not correct")
+            raise ValidationError("User email is not correct")
         return attrs
+
+    @property
+    def errors(self):
+        """
+        Returns custom error message
+
+        Returns
+        -------
+        ReturnDict
+            errors dict
+        """
+        x = super().errors
+        if x:
+            if x.get('non_field_errors'):
+                return {'message': x['non_field_errors'][0], 'success': False}
+            elif x.get('username'):
+                return {'message': "Username field required", 'success': False}
+            elif x.get('password'):
+                return {'message': "Password field required", 'success': False}
+            return ReturnDict({'errors': x}, serializer=self)
+        return ReturnDict(x, serializer=self)
 
 
 class RegisterSerializer(serializers.ModelSerializer):
