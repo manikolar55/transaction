@@ -107,3 +107,39 @@ class RegisterSerializer(serializers.ModelSerializer):
                 return {"message": x["password2"][0], "success": False}
             return ReturnDict({"errors": x}, serializer=self)
         return ReturnDict(x, serializer=self)
+
+
+class ResetPasswordSerializer(serializers.Serializer):
+    current_password = serializers.CharField(max_length=50, required=True)
+    new_password = serializers.CharField(max_length=50, required=True)
+    again_new_password = serializers.CharField(max_length=50, required=True)
+
+    @property
+    def errors(self):
+        """
+        Returns custom error message
+
+        Returns
+        -------
+        ReturnDict
+            errors dict
+        """
+        x = super().errors
+        if x:
+            if x.get("non_field_errors"):
+                return {"message": x["non_field_errors"][0], "success": False}
+            elif x.get("current_password"):
+                return {"message": x["current_password"][0], "success": False}
+            elif x.get("new_password"):
+                return {"message": x["new_password"][0], "success": False}
+            elif x.get("again_new_password"):
+                return {"message": x["again_new_password"][0], "success": False}
+            return ReturnDict({"errors": x}, serializer=self)
+        return ReturnDict(x, serializer=self)
+
+
+class EditProfileSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=50, required=False)
+    email = serializers.EmailField(
+        required=False, validators=[UniqueValidator(queryset=User.objects.all())]
+    )
