@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework.utils.serializer_helpers import ReturnDict
 
-from .models import Block, CarsBlock
+from .models import Block, CarsBlock, WishListCarsBlock, WishListBlock
 
 
 class BookedSeatSerializer(serializers.Serializer):
@@ -12,11 +12,11 @@ class BookedSeatSerializer(serializers.Serializer):
     car_number = serializers.CharField(required=True)
 
     class Meta:
-        model = CarsBlock
+        model = WishListCarsBlock
         fields = ["block", "seat"]
 
     def validate(self, attrs):
-        block_data = Block.objects.filter(blocks=attrs["block"])
+        block_data = WishListBlock.objects.filter(blocks=attrs["block"])
         if not block_data:
             raise ValidationError("Block does not exist")
         # data = CarsBlock.objects.filter(

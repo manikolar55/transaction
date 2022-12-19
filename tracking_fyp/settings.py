@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-=b60z7!3zkw6w&6k7ql4u5uf-fx7tz5$y!(4vpys2&+#l%xl=8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 CORS_ALLOW_ALL_ORIGINS = True # If this is used then `CORS_ALLOWED_ORIGINS` will not have any effect
@@ -110,10 +110,10 @@ WSGI_APPLICATION = 'tracking_fyp.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd96dl8jcrt3e69',
-        'USER': 'hyhgwtnamxcyxd',
-        'PASSWORD': '5b915d67cf4b342749bdb3feaa04ae79a8e047fc2143613fde6e8071fce7264a',
-        'HOST': 'ec2-54-86-214-124.compute-1.amazonaws.com',
+        'NAME': 'd56vcnrv6rguc1',
+        'USER': 'tbuovegzpxgojk',
+        'PASSWORD': 'e348f95034d8f0e955893e8e07f1697e5113a45af6923131ebe531169099e796',
+        'HOST': 'ec2-18-214-134-226.compute-1.amazonaws.com',
         'PORT': '5432',
     }
 }
