@@ -4,7 +4,8 @@ from rest_framework.views import APIView
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
 
 from .models import CarsBlock, Block, WishListBlock, WishListCarsBlock
-from .serializers import BookedSeatSerializer
+from .serializers import BookedSeatSerializer, WishListBookedSeatSerializer
+
 
 # Create your views here.
 
@@ -81,7 +82,7 @@ class WishListBookingData(APIView):
 class WishListBookedSeat(APIView):
     def post(self, request):
         data = request.data
-        serializer = BookedSeatSerializer(data=data)
+        serializer = WishListBookedSeatSerializer(data=data)
         serializer.is_valid(raise_exception=True)
         car_data = WishListCarsBlock.objects.filter(
             block__blocks=data["block"], seat_number=data["seat"]
