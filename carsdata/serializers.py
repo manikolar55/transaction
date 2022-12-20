@@ -10,7 +10,7 @@ class BookedSeatSerializer(serializers.Serializer):
     seat = serializers.IntegerField(required=True)
     booked = serializers.BooleanField(required=True)
     car_number = serializers.CharField(required=True)
-
+    date_time = serializers.DateTimeField(required=True)
     class Meta:
         model = CarsBlock
         fields = ["block", "seat"]
@@ -48,6 +48,8 @@ class BookedSeatSerializer(serializers.Serializer):
                 return {"message": "seat field required", "success": False}
             elif x.get("car_number"):
                 return {"message": "Car Number field required", "success": False}
+            elif x.get("date_time"):
+                return {"message": "Date Time field required", "success": False}
             return ReturnDict({"errors": x}, serializer=self)
         return ReturnDict(x, serializer=self)
 
@@ -57,7 +59,7 @@ class WishListBookedSeatSerializer(serializers.Serializer):
     seat = serializers.IntegerField(required=True)
     booked = serializers.BooleanField(required=True)
     car_number = serializers.CharField(required=True)
-
+    date_time = serializers.DateTimeField(required=True)
     class Meta:
         model = WishListCarsBlock
         fields = ["block", "seat"]
@@ -95,5 +97,7 @@ class WishListBookedSeatSerializer(serializers.Serializer):
                 return {"message": "seat field required", "success": False}
             elif x.get("car_number"):
                 return {"message": "Car Number field required", "success": False}
+            elif x.get("date_time"):
+                return {"message": "Date Time field required", "success": False}
             return ReturnDict({"errors": x}, serializer=self)
         return ReturnDict(x, serializer=self)

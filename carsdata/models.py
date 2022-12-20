@@ -23,6 +23,7 @@ class CarsBlock(models.Model):
     seat_number = models.IntegerField()
     taken = models.BooleanField(default=False)
     car_number = models.CharField(max_length=50, null=True, blank=True)
+    date_time = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         db_table = "cars_model"
@@ -49,6 +50,7 @@ class WishListCarsBlock(models.Model):
     seat_number = models.IntegerField()
     taken = models.BooleanField(default=False)
     car_number = models.CharField(max_length=50, null=True, blank=True)
+    date_time = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         db_table = "wish_list_cars_model"

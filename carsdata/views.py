@@ -23,7 +23,7 @@ class BookingData(APIView):
             cars_data = CarsBlock.objects.filter(block__blocks=data.blocks)
             for block in cars_data:
                 # cound_data = "car_number {}".format(count)
-                my_dict[block.seat_number] = [block.taken, block.car_number]
+                my_dict[block.seat_number] = {"seat_booked": block.taken, "car_number:": block.car_number, "date_time":block.date_time}
                 # my_dict[cound_data] = block.car_number
                 # count += 1
             final_dict[data.blocks] = my_dict
@@ -44,14 +44,16 @@ class BookedSeat(APIView):
             if data["booked"] == "True":
                 car_data.taken = data["booked"]
                 car_data.car_number = data["car_number"]
+                car_data.date_time = data["date_time"]
                 car_data.user = request.user.id
-                car_data.save(update_fields=["taken", "user", "car_number"])
+                car_data.save(update_fields=["taken", "user", "car_number", "date_time"])
                 return Response("Seat Booked", status=HTTP_201_CREATED)
             else:
                 car_data.taken = data["booked"]
                 car_data.car_number = None
                 car_data.user = request.user.id
-                car_data.save(update_fields=["taken", "user", "car_number"])
+                car_data.date_time = None
+                car_data.save(update_fields=["taken", "user", "car_number", "date_time"])
                 return Response("Seat Dropped", status=HTTP_201_CREATED)
         else:
             return Response("Data Not Found", status=HTTP_201_CREATED)
@@ -70,7 +72,7 @@ class WishListBookingData(APIView):
             cars_data = WishListCarsBlock.objects.filter(block__blocks=data.blocks)
             for block in cars_data:
                 # cound_data = "car_number {}".format(count)
-                my_dict[block.seat_number] = [block.taken, block.car_number]
+                my_dict[block.seat_number] = {"seat_booked": block.taken, "car_number:": block.car_number, "date_time":block.date_time}
                 # my_dict[cound_data] = block.car_number
                 # count += 1
             final_dict[data.blocks] = my_dict
@@ -91,14 +93,16 @@ class WishListBookedSeat(APIView):
             if data["booked"] == "True":
                 car_data.taken = data["booked"]
                 car_data.car_number = data["car_number"]
+                car_data.date_time = data["date_time"]
                 car_data.user = request.user.id
-                car_data.save(update_fields=["taken", "user", "car_number"])
+                car_data.save(update_fields=["taken", "user", "car_number", "date_time"])
                 return Response("Seat Booked", status=HTTP_201_CREATED)
             else:
                 car_data.taken = data["booked"]
                 car_data.car_number = None
                 car_data.user = request.user.id
-                car_data.save(update_fields=["taken", "user", "car_number"])
+                car_data.date_time = None
+                car_data.save(update_fields=["taken", "user", "car_number", "date_time"])
                 return Response("Seat Dropped", status=HTTP_201_CREATED)
         else:
             return Response("Data Not Found", status=HTTP_201_CREATED)
