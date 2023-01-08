@@ -22,6 +22,7 @@ class UserDetailAPI(APIView):
             return Response(res)
         token, created = Token.objects.get_or_create(user=user_obj)
         response = {
+            "name": user_obj.name,
             "username": serializer.validated_data["username"],
             "token": token.key,
         }
