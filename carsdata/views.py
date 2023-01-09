@@ -118,12 +118,15 @@ class DropCarGet(APIView):
         response_list = []
         final_dict = {}
         user_id = request.user.id
-        cars_block = WishListBlock.objects.all()
+        cars_block = Block.objects.all()
         for data in cars_block:
             count = 0
             booked_list = []
             my_dict = {}
-            cars_data = WishListCarsBlock.objects.filter(block__blocks=data.blocks, user=user_id)
+
+            cars_data = CarsBlock.objects.filter(
+                block__blocks=data.blocks, user=user_id
+            ).first()
             for block in cars_data:
                 # cound_data = "car_number {}".format(count)
                 my_dict[block.seat_number] = {"id": block.id, "seat_booked": block.taken, "car_number:": block.car_number,
@@ -141,7 +144,9 @@ class CarDropPost(APIView):
         data = request.data
         data_id = data["id"]
         user_id = request.user.id
-        cars_data = WishListCarsBlock.objects.filter(id=data_id, user=user_id).first()
+        cars_data = CarsBlock.objects.filter(
+            id=data_id, user=user_id
+        ).first()
         if cars_data:
             cars_data.taken = False
             cars_data.car_number = None
@@ -158,12 +163,12 @@ class ChangeTime(APIView):
         response_list = []
         final_dict = {}
         user_id = request.user.id
-        cars_block = WishListBlock.objects.all()
+        cars_block = Block.objects.all()
         for data in cars_block:
             count = 0
             booked_list = []
             my_dict = {}
-            cars_data = WishListCarsBlock.objects.filter(block__blocks=data.blocks, user=user_id)
+            cars_data = CarsBlock.objects.filter(block__blocks=data.blocks, user=user_id)
             for block in cars_data:
                 # cound_data = "car_number {}".format(count)
                 my_dict[block.seat_number] = {"id": block.id, "seat_booked": block.taken, "car_number:": block.car_number,
@@ -185,7 +190,7 @@ class ChangeTimePost(APIView):
         date_time = data["from_date_time"]
         end_date_time = data["end_date_time"]
         user_id = request.user.id
-        cars_data = WishListCarsBlock.objects.filter(id=data_id, user=user_id).first()
+        cars_data = CarsBlock.objects.filter(id=data_id, user=user_id).first()
         if cars_data:
             cars_data.date_time = date_time
             cars_data.date_time_drop = end_date_time
