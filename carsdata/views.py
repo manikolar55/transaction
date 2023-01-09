@@ -126,8 +126,10 @@ class DropCarGet(APIView):
 
             cars_data = CarsBlock.objects.filter(
                 block__blocks=data.blocks, user=user_id
-            ).first()
+            )
+
             for block in cars_data:
+
                 # cound_data = "car_number {}".format(count)
                 my_dict[block.seat_number] = {"id": block.id, "seat_booked": block.taken, "car_number:": block.car_number,
                                               "from_date_time":block.date_time, "to_date_time": block.date_time_drop}
