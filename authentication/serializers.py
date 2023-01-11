@@ -143,3 +143,32 @@ class EditProfileSerializer(serializers.Serializer):
     email = serializers.EmailField(
         required=False, validators=[UniqueValidator(queryset=User.objects.all())]
     )
+
+
+class ForgetPasswordSerializer(serializers.Serializer):
+    username = serializers.EmailField(
+        required=True
+    )
+
+    password = serializers.CharField(max_length=30, required=True)
+
+    @property
+    def errors(self):
+        """
+        Returns custom error message
+
+        Returns
+        -------
+        ReturnDict
+            errors dict
+        """
+        x = super().errors
+        if x:
+            if x.get("non_field_errors"):
+                return {"message": x["non_field_errors"][0], "success": False}
+            elif x.get("username"):
+                return {"message": "Username field required", "success": False}
+            elif x.get("password"):
+                return {"message": "Password field required", "success": False}
+            return ReturnDict({"errors": x}, serializer=self)
+        return ReturnDict(x, serializer=self)

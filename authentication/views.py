@@ -1,8 +1,15 @@
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import AllowAny
+from rest_framework.status import HTTP_201_CREATED
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import UserSerializer, RegisterSerializer, ResetPasswordSerializer, EditProfileSerializer
+from .serializers import (
+    UserSerializer,
+    RegisterSerializer,
+    ResetPasswordSerializer,
+    EditProfileSerializer,
+    ForgetPasswordSerializer,
+)
 from rest_framework.authentication import TokenAuthentication
 from rest_framework import generics
 from rest_framework.authtoken.models import Token
@@ -18,7 +25,7 @@ class UserDetailAPI(APIView):
         serializer.is_valid(raise_exception=True)
         user_obj = User.objects.get(email=serializer.validated_data["username"])
         if user_obj.password != data["password"]:
-            res = {'message': "password is incorrect", 'success': False}
+            res = {"message": "password is incorrect", "success": False}
             return Response(res)
         token, created = Token.objects.get_or_create(user=user_obj)
         response = {
@@ -74,3 +81,19 @@ class EditProfile(APIView):
                     return Response("Email Updated", status=200)
         else:
             return Response("User Not Found", status=200)
+
+
+class ForgetPassword(APIView):
+    permission_classes = [AllowAny]
+
+    def put(self, request):
+        data = request.data
+        serializer = ForgetPasswordSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        user_username = User.objects.filter(username=data["username"]).first()
+        if user_username:
+            user_username.password = data["password"]
+            user_username.save(update_fields=["password"])
+            return Response("Password Change", status=HTTP_201_CREATED)
+        else:
+            return Response("User is invalid", status=HTTP_201_CREATED)
