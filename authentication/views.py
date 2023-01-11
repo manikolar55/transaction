@@ -1,6 +1,6 @@
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import AllowAny
-from rest_framework.status import HTTP_201_CREATED
+from rest_framework.status import HTTP_201_CREATED, HTTP_401_UNAUTHORIZED
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import (
@@ -29,6 +29,7 @@ class UserDetailAPI(APIView):
             return Response(res)
         token, created = Token.objects.get_or_create(user=user_obj)
         response = {
+            "success": True,
             "name": user_obj.name,
             "username": serializer.validated_data["username"],
             "token": token.key,
@@ -102,10 +103,10 @@ class ForgetPassword(APIView):
 class CheckUser(APIView):
     permission_classes = [AllowAny]
 
-    def get(self, request):
+    def post(self, request):
         data = request.data
         user_username = User.objects.filter(username=data["username"]).first()
         if user_username:
             return Response("User Exits", status=HTTP_201_CREATED)
         else:
-            return Response("User is invalid", status=HTTP_201_CREATED)
+            return Response("User is invalid", status=HTTP_401_UNAUTHORIZED)
