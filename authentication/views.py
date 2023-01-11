@@ -97,3 +97,15 @@ class ForgetPassword(APIView):
             return Response("Password Change", status=HTTP_201_CREATED)
         else:
             return Response("User is invalid", status=HTTP_201_CREATED)
+
+
+class CheckUser(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        data = request.data
+        user_username = User.objects.filter(username=data["username"]).first()
+        if user_username:
+            return Response("User Exits", status=HTTP_201_CREATED)
+        else:
+            return Response("User is invalid", status=HTTP_201_CREATED)
